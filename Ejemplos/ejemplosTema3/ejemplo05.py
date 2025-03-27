@@ -4,7 +4,7 @@ from matplotlib.backend_bases import MouseButton
 import numpy as np
 
 
-image = ski.io.imread("images/folleto.jpg")
+image = ski.io.imread("Ejemplos/ejemplosTema3/images/folleto.jpg")
 
 ######################################
 # Selección de puntos con el ratón   #

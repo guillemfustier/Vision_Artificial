@@ -5,7 +5,7 @@ import skimage as ski
 import matplotlib.pyplot as plt
 import numpy as np
 
-img_original = ski.io.imread("images/lena.ppm")
+img_original = ski.io.imread("Ejemplos/ejemplosTema3/images/lena.ppm")
 
 src = [[0, 0],
        [0, 511],

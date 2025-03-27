@@ -8,7 +8,7 @@ import numpy as np
 
 FACTOR = 8
 
-img_original = ski.io.imread("images/ojo_azul.png")
+img_original = ski.io.imread("Ejemplos/ejemplosTema3/images/ojo_azul.png")
 
 img_ojo = ski.transform.rescale(img_original, (1 / FACTOR, 1 / FACTOR, 1), order=5)
 

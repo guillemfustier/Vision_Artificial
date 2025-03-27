@@ -4,7 +4,7 @@
 import skimage as ski
 import matplotlib.pyplot as plt
 
-img_original = ski.io.imread("images/lena256.pgm")
+img_original = ski.io.imread("Ejemplos/ejemplosTema3/images/lena256.pgm")
 
 img_girada = ski.transform.rotate(img_original, 30, center=(0, 0), resize=True, order=3)
 transf_despl = ski.transform.EuclideanTransform(translation=(100, 50))

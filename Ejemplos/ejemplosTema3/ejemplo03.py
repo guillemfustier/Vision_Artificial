@@ -5,7 +5,7 @@ import skimage as ski
 import matplotlib.pyplot as plt
 import numpy as np
 
-img_original = ski.io.imread("images/lena256.pgm")
+img_original = ski.io.imread("Ejemplos/ejemplosTema3/images/lena256.pgm")
 
 FACTOR_ESCALADO = 1.5
 ta = ski.transform.AffineTransform(scale=FACTOR_ESCALADO)
