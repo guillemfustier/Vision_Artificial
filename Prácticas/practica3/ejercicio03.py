@@ -24,6 +24,8 @@ dst = src
 src = np.array(src)
 dst = np.array(dst)
 
+dst[5] = [1143, 1603]  # Labio izquierdo
+dst[6] = [1781, 1608]  # Labio derecho
 dst[7] = [1462, 2150]  # Barbilla alargada
 dst[8] = [345, 2108]  # Hombro izquierdo subido
 dst[9] = [2574, 2215]  # Hombro derecho subido

@@ -23,7 +23,7 @@ color puro RGB, al ser una combinación siempre se podrá diferenciar.
 import skimage as ski
 import matplotlib.pyplot as plt
 
-imagen_en_color = ski.io.imread("images/banderaBarça.jpg")
+imagen_en_color = ski.io.imread("Prácticas/practica1/images/banderaBarça.jpg")
 
 print(f'Número de dimensiones: {imagen_en_color.ndim}')         # número de dimensiones
 print(f'Tamaño de la matriz (shape): {imagen_en_color.shape}')  # (filas, cols, bandacolor)

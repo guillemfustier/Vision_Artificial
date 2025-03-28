@@ -10,7 +10,7 @@ import time
 MASK_SIZE = 21
 STD_DEV = 3
 
-imagen = ski.io.imread("images/boat.512.tiff")
+imagen = ski.io.imread("Ejemplos/ejemplosTema4/images/boat.512.tiff")
 imagen = ski.util.img_as_float(imagen)
 
 vector = scipy.signal.windows.gaussian(MASK_SIZE, STD_DEV)

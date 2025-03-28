@@ -7,7 +7,7 @@ import skimage as ski
 import matplotlib.pyplot as plt
 import math
 
-imagen = ski.io.imread("images/boat.512.tiff")
+imagen = ski.io.imread("Ejemplos/ejemplosTema4/images/boat.512.tiff")
 imagen = ski.transform.rescale(imagen, 0.5, order=5)
 
 amount_sp_noise = 0.05  # 5%
