@@ -8,7 +8,7 @@ import skimage as ski
 import scipy.fft as fft
 import matplotlib.pyplot as plt
 
-image = ski.io.imread("images/boat.511.tiff")
+image = ski.io.imread("Ejemplos/ejemplosTema5/images/boat.511.tiff")
 
 # Cálculo de la transformada
 ft = fft.fft2(image)

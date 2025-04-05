@@ -8,14 +8,20 @@ import numpy as np
 import scipy
 import scipy.fft as fft
 
-MASK_SIZE = 7
+MASK_SIZE = 31
+STD_DEV = 5
 
-imagen = ski.io.imread("Ejemplos/ejemplosTema5/images/boat.511.tiff")
+imagen = ski.io.imread("Prácticas/practica5/images/boat.511.tiff")
 imagen = ski.util.img_as_float(imagen)
 
-# Convolución en el espacio
-mascara = np.ones((MASK_SIZE, MASK_SIZE))  # Máscara de NxN toda con 1
-mascara /= np.sum(mascara)  # Máscara normalizada
+# Hacemos una máscara de convolución de un filtro gaussiano
+vector = scipy.signal.windows.gaussian(MASK_SIZE, STD_DEV)
+vector /= np.sum(vector)  # Máscara normalizada
+vectorH = vector.reshape(1, MASK_SIZE)
+vectorV = vector.reshape(MASK_SIZE, 1)
+
+mascara = vectorV @ vectorH
+
 res_convol = scipy.ndimage.convolve(imagen, mascara, mode="wrap")
 
 # Ampliamos la máscara con ceros para que tenga el mismo tamaño que la imagen
