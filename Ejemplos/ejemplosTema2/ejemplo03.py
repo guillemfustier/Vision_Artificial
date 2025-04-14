@@ -5,7 +5,7 @@ import skimage as ski
 import matplotlib.pyplot as plt
 import numpy as np
 
-img_color = ski.io.imread("images/lena256.ppm")
+img_color = ski.io.imread("Ejemplos/ejemplosTema2/images/lena256.ppm")
 h_color, centros_color = ski.exposure.histogram(img_color, channel_axis=-1)
 
 plano_rojo = img_color[:, :, 0]

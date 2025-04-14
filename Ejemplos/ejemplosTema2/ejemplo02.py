@@ -5,7 +5,7 @@
 import skimage as ski
 import matplotlib.pyplot as plt
 
-img_original = ski.io.imread("images/girl.pgm")
+img_original = ski.io.imread("Ejemplos/ejemplosTema2/images/girl.pgm")
 h_orig, c_orig = ski.exposure.histogram(img_original)
 
 img_eq = ski.exposure.equalize_hist(img_original)

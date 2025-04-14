@@ -6,7 +6,7 @@ import skimage as ski
 import matplotlib.pyplot as plt
 import numpy as np
 
-img_original = ski.io.imread("images/girl.pgm")
+img_original = ski.io.imread("Ejemplos/ejemplosTema2/images/girl.pgm")
 h_orig, c_orig = ski.exposure.histogram(img_original)
 
 img_invertida = 255 - img_original

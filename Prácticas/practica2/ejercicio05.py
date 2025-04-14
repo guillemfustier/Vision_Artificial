@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 from skimage.exposure import match_histograms
 
-img_original_girl = ski.io.imread("images/girl.pgm")
-img_original_nieve = ski.io.imread("images/nieve.pgm")
+img_original_girl = ski.io.imread("Prácticas/practica2/images/girl.pgm")
+img_original_nieve = ski.io.imread("Prácticas/practica2/images/nieve.pgm")
 
 h_orig_girl, c_orig_girl = ski.exposure.histogram(img_original_girl)
 h_orig_nieve, c_orig_nieve = ski.exposure.histogram(img_original_nieve)

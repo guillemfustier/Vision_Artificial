@@ -5,7 +5,7 @@ import skimage as ski
 import matplotlib.pyplot as plt
 import numpy as np
 
-img_original = ski.io.imread("images/lena256.ppm")
+img_original = ski.io.imread("Ejemplos/ejemplosTema2/images/lena256.ppm")
 
 img_original = ski.util.img_as_float(img_original)
 forma_inicial = img_original.shape
