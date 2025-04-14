@@ -2,9 +2,9 @@ import skimage as ski
 import matplotlib.pyplot as plt
 import numpy as np
 
-image1 = ski.io.imread("images/cuadros.png")  # Probar también con sintética
+image1 = ski.io.imread("Ejemplos/ejemplosTema6/images/cuadros.png")  # Probar también con sintética
 image1 = ski.util.img_as_float(image1)
-image2 = ski.io.imread("images/cuadros_ruidosa.png")
+image2 = ski.io.imread("Ejemplos/ejemplosTema6/images/cuadros_ruidosa.png")
 image2 = ski.util.img_as_float(image2)
 
 

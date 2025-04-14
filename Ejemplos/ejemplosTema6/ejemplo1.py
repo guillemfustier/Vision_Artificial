@@ -2,20 +2,20 @@ import skimage as ski
 import matplotlib.pyplot as plt
 import numpy as np
 
-image1 = ski.io.imread("images/sintetica.png")  # Probar también con cuadros
-image2 = ski.io.imread("images/sintetica_ruidosa.png")
+image1 = ski.io.imread("Ejemplos/ejemplosTema6/images/sintetica.png")  # Probar también con cuadros
+image2 = ski.io.imread("Ejemplos/ejemplosTema6/images/sintetica_ruidosa.png")
 
 
 def filtrar(image, nombre_filtro):
-    if nombre_filtro == "roberts":
+    if nombre_filtro == "roberts":      # en lugar de hacerlo en "h,v" lo hace en diagonal
         dir1 = "_neg_diag"
         dir2 = "_pos_diag"
     else:
-        dir1 = "_h"
-        dir2 = "_v"
-    img1 = eval("ski.filters." + nombre_filtro + dir1 + "(image)")
-    img2 = eval("ski.filters." + nombre_filtro + dir2 + "(image)")
-    img3 = eval("ski.filters." + nombre_filtro + "(image)")
+        dir1 = "_h"     # para horizontal
+        dir2 = "_v"     # para vertical
+    img1 = eval("ski.filters." + nombre_filtro + dir1 + "(image)")      # respuesta en h
+    img2 = eval("ski.filters." + nombre_filtro + dir2 + "(image)")      # respuesta en v
+    img3 = eval("ski.filters." + nombre_filtro + "(image)")             # magnitud
     maximo = img3.max()
     low = maximo * 0.1  # Probar otros valores
     high = maximo * 0.2
