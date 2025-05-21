@@ -47,42 +47,13 @@ imgs_hough_sobel = get_hough(imgs_sobel)
 imgs_canny = canny(total_images, 3)
 imgs_hough_canny = get_hough(imgs_canny)
 
-"""
-fig, ax = plt.subplots(nrows=4, ncols=5, layout="constrained")
-ax[0, 0].imshow(total_images[0], cmap='gray')
-ax[1, 0].imshow(total_images[1], cmap='gray')
-ax[2, 0].imshow(total_images[2], cmap='gray')
-ax[3, 0].imshow(total_images[3], cmap='gray')
 
-ax[0, 1].imshow(imgs_sobel[0], cmap='gray')
-ax[1, 1].imshow(imgs_sobel[1], cmap='gray')
-ax[2, 1].imshow(imgs_sobel[2], cmap='gray')
-ax[3, 1].imshow(imgs_sobel[3], cmap='gray')
-
-zeros = np.zeros(imgs_sobel[0].shape)
-
-ax[0, 2].imshow(imgs_hough_sobel[0], cmap='gray')
-ax[1, 2].imshow(imgs_hough_sobel[1], cmap='gray')
-ax[2, 2].imshow(imgs_hough_sobel[2], cmap='gray')
-ax[3, 2].imshow(imgs_hough_sobel[3], cmap='gray')
-
-ax[0, 3].imshow(imgs_canny[0], cmap='gray')
-ax[1, 3].imshow(imgs_canny[1], cmap='gray')
-ax[2, 3].imshow(imgs_canny[2], cmap='gray')
-ax[3, 3].imshow(imgs_canny[3], cmap='gray')
-
-ax[0, 4].imshow(imgs_hough_canny[0], cmap='gray')
-ax[1, 4].imshow(imgs_hough_canny[1], cmap='gray')
-ax[2, 4].imshow(imgs_hough_canny[2], cmap='gray')
-ax[3, 4].imshow(imgs_hough_canny[3], cmap='gray')
-"""
 imagenes_conjunto = [total_images, imgs_sobel, imgs_hough_sobel, imgs_canny, imgs_hough_canny]
 
 fig, ax = plt.subplots(nrows=4, ncols=5, layout="constrained")
 fig.suptitle("Ejercicio 1", fontsize=24)
 for i in range(len(imagenes_conjunto)):
     for j in range(len(imagenes_conjunto[0])):
-        print(j, i)
         if i == 4 or i == 2:
             image = imagenes_conjunto[i-1][j]
             segmentos = ski.transform.probabilistic_hough_line(imagenes_conjunto[i-1][j], threshold=10, line_length=5, line_gap=3)

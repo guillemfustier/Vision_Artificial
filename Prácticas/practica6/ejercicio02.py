@@ -1,76 +1,80 @@
 import skimage as ski
 import matplotlib.pyplot as plt
-import math
 import numpy as np
 
-imagen = ski.io.imread("Prácticas/practica6/images/cuadros.png")
+gaussian_noise=0.001
 
-# Añadir ruido Gaussiano
-gaussian_values = (0.001,
-                   0.0015,
-                   0.0025)
-total_images = []
-total_images.append(imagen)
-for i in range(len(gaussian_values)):
-    img_noise = ski.util.random_noise(imagen, mode="gaussian", var=gaussian_values[i])
-    total_images.append(img_noise)
+imagen = ski.io.imread("Prácticas/practica6/images/cuadros.png")  # Probar también con cuadros
 
-def canny(total_images, sigma, *args, **kwargs):
-    imgs_canny = []
-    for image in total_images:
-        img = ski.feature.canny(image, sigma=sigma, *args, **kwargs)
-        imgs_canny.append(img)
-    return imgs_canny
+imagen = ski.util.random_noise(imagen, mode="gaussian", var=gaussian_noise)
 
-gradientes_sobel = []
-for img in total_images:
-    img_grad = ski.filters.sobel(img)
-    gradientes_sobel.append(img_grad)
-
-imgs_sobel = []
-imgs_hough_sobel = []
-for img in gradientes_sobel:
-    maximo = img.max()
-    low = maximo * 0.1  # Probar otros valores
-    high = maximo * 0.2
-    img_borde = ski.filters.apply_hysteresis_threshold(img, low, high)
-    img_sobel = ski.morphology.thin(img_borde)
-    imgs_sobel.append(img_sobel)
-    img_hough = ski.transform.probabilistic_hough_line(img_sobel)
-    imgs_hough_sobel.append(img_hough)
-
-imgs_canny = canny(total_images, 3)
+def filtrar(image, nombres_filtros):
+    images = [image]
+    for nf in nombres_filtros:
+        if nf == "moravec":
+            img = my_moravec(image)
+        else:
+            if nf == "fast":
+                param = ", 9"
+            else:
+                param = ""
+            img = eval("ski.feature.corner_" + nf + "(image" + param + ")")
+            if nf == "foerstner":
+                img = img[0]
+            elif nf == "kitchen_rosenfeld":
+                img = np.abs(img)
+        images.append(img)
+    return images
 
 
-fig, ax = plt.subplots(nrows=4, ncols=5, layout="constrained")
-ax[0, 0].imshow(total_images[0], cmap='gray')
-ax[1, 0].imshow(total_images[1], cmap='gray')
-ax[2, 0].imshow(total_images[2], cmap='gray')
-ax[3, 0].imshow(total_images[3], cmap='gray')
+def detectar_picos(images, umbral):
+    resultados = [images[0]]
+    for i in range(1, len(images)):
+        img = ski.feature.corner_peaks(images[i], indices=False, min_distance=10, threshold_rel=umbral)
+        resultados.append(img)
+    return resultados
 
-ax[0, 1].imshow(imgs_sobel[0], cmap='gray')
-ax[1, 1].imshow(imgs_sobel[1], cmap='gray')
-ax[2, 1].imshow(imgs_sobel[2], cmap='gray')
-ax[3, 1].imshow(imgs_sobel[3], cmap='gray')
 
-zeros = np.zeros(imgs_sobel[0].shape)
+def my_moravec(cimage, window_size=1):
+    rows = cimage.shape[0]
+    cols = cimage.shape[1]
+    out = np.zeros(cimage.shape)
+    for r in range(window_size + 1, rows - window_size - 1):
+        for c in range(window_size + 1, cols - window_size - 1):
+            min_msum = float('inf')
+            for br in range(r - 1, r + 2):
+                for bc in range(c - 1, c + 2):
+                    if br != r or bc != c:  #### En scikit-image aquí aparece un AND !!!!
+                        msum = 0
+                        for mr in range(- window_size, window_size + 1):
+                            for mc in range(- window_size, window_size + 1):
+                                t = cimage[r + mr, c + mc] - cimage[br + mr, bc + mc]
+                                msum += t * t
+                        min_msum = min(msum, min_msum)
 
-ax[0, 2].imshow(imgs_hough_sobel[0], cmap='gray')
-ax[1, 2].imshow(imgs_hough_sobel[1], cmap='gray')
-ax[2, 2].imshow(imgs_hough_sobel[2], cmap='gray')
-ax[3, 2].imshow(imgs_hough_sobel[3], cmap='gray')
+            out[r, c] = min_msum
+    return out
 
-ax[0, 3].imshow(imgs_canny[0], cmap='gray')
-ax[1, 3].imshow(imgs_canny[1], cmap='gray')
-ax[2, 3].imshow(imgs_canny[2], cmap='gray')
-ax[3, 3].imshow(imgs_canny[3], cmap='gray')
-"""
-ax[0, 4].imshow(imgs_hough_canny[0], cmap='gray')
-ax[1, 4].imshow(imgs_hough_canny[1], cmap='gray')
-ax[2, 4].imshow(imgs_hough_canny[2], cmap='gray')
-ax[3, 4].imshow(imgs_hough_canny[3], cmap='gray')
 
-"""
-for a in ax.ravel():
-    a.set_axis_off()
-plt.show()
+def mostrar(titulo, resultados1, resultados2, nombres):
+    fig, ax = plt.subplots(nrows=2, ncols=len(resultados1), layout="constrained")
+    fig.suptitle(titulo, fontsize=24)
+    for i in range(len(resultados1)):
+        ax[0, i].imshow(resultados1[i], cmap='gray')
+        ax[0, i].set_title(nombres[i], fontsize=16)
+        ax[1, i].imshow(resultados2[i], cmap='gray')
+        ax[1, i].set_title("Ruidosa" if i == 0 else nombres[i], fontsize=16)
+    for a in ax.ravel():
+        a.set_axis_off()
+    plt.show()
+
+
+filtros = ["kitchen_rosenfeld", "foerstner", "moravec", "harris", "fast"]
+UMBRAL = 0.01
+angulos_rotacion = [0, 22.5, 45, 67.5, 90]
+
+for angulo in angulos_rotacion:
+    imagen = ski.transform.rotate(imagen, angulo)
+    images = filtrar(imagen, filtros)
+    picos1 = detectar_picos(images, UMBRAL)
+    mostrar(f"Esquinas detectadas (Ángulo = {angulo}º)", images, picos1, ["Original"] + filtros)
