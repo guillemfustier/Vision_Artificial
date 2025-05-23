@@ -32,12 +32,14 @@ for imagen in imgs_bordes:
 # Dibujar los círculos en la imagen resultado
 imgs_resultado = []
 for i in range (3):
-    resultado = np.zeros(monedas1.shape)
-    for fila, col, radio in zip(cy_list[0], cx_list[0], radii_list[0]):
-        circy, circx = ski.draw.circle_perimeter(fila, col, radio, shape=imgs_hough_euro[0].shape)  # Dibuja un círculo
-        resultado[circy, circx] = 1
+    resultado = ski.color.gray2rgb(monedas1*0)
+    for fila, col, radio in zip(cy_list[i], cx_list[i], radii_list[i]):
+        circy, circx = ski.draw.circle_perimeter(fila, col, radio, shape=monedas1.shape)  # Dibuja un círculo
+        if radio == 23:
+            resultado[circy, circx] = (255, 0, 0)   # moneda de 1 euro
+        else:
+            resultado[circy, circx] = (0, 255, 0)       # moneda de 20 cts
     imgs_resultado.append(resultado)
-
 
 # Visualizar resultados
 fig, axs = plt.subplots(nrows=3, ncols=3, layout="constrained")

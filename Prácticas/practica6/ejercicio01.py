@@ -18,7 +18,7 @@ for i in range(len(gaussian_values)):
 def filtrar_sobel(images):
     filtradas = []
     for image in images:
-        img_todo = ski.filters.sobel(imagen)          # magnitud
+        img_todo = ski.filters.sobel(image)          # magnitud
         maximo = img_todo.max()
         low = maximo * 0.1  # Probar otros valores
         high = maximo * 0.2
@@ -63,9 +63,6 @@ for i in range(len(imagenes_conjunto)):
                 ax[j, i].plot((p0[0], p1[0]), (p0[1], p1[1]), color='r')  # Dibujar segmento
         else:
             ax[j, i].imshow(imagenes_conjunto[i][j], cmap='gray')
-for a in ax.ravel():
-    a.set_axis_off()
-
 for a in ax.ravel():
     a.set_axis_off()
 plt.show()
