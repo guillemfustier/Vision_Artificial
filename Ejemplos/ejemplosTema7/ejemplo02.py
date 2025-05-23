@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import skimage as ski
 
 # Leer la imagen y crear mapa de bordes usando el gradiente de Sobel
-image = ski.io.imread("images/monedas.jpg")
+image = ski.io.imread("Ejemplos/ejemplosTema7/images/monedas.jpg")
 image = ski.color.rgb2gray(image)  # Convertir a niveles de gris
 
 gradiente = ski.filters.sobel(image)
