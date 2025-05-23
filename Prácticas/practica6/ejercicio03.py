@@ -38,7 +38,7 @@ for i in range (3):
         if radio == 23:
             resultado[circy, circx] = (255, 0, 0)   # moneda de 1 euro
         else:
-            resultado[circy, circx] = (0, 255, 0)       # moneda de 20 cts
+            resultado[circy, circx] = (0, 255, 0)       # moneda de 10 cts
     imgs_resultado.append(resultado)
 
 # Visualizar resultados
