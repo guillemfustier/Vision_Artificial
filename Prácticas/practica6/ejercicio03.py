@@ -8,37 +8,49 @@ monedas3 = ski.io.imread("Prácticas/practica6/images/monedas3.png")  # Probar t
 
 imgs_monedas = [monedas1, monedas2, monedas3]
 
-imgs_filtradas = []
+imgs_bordes = []
 for imagen in imgs_monedas:
-    imagen = ski.filters.sobel(imagen)      # magnitud
-    maximo = imagen.max()
-    low = maximo * 0.1  # Probar otros valores
-    high = maximo * 0.2
-    img_filtrada = ski.filters.apply_hysteresis_threshold(imagen, low, high)
-    imgs_filtradas.append(img_filtrada)
-
+    imagen_borde = ski.feature.canny(imagen, sigma=1.2)
+    imagen_borde = ski.morphology.thin(imagen_borde)
+    imgs_bordes.append(imagen_borde)
+    
 imgs_hough_euro = []
-for imagen in imgs_filtradas:
+cy_list = []
+cx_list = []
+radii_list = []
+for imagen in imgs_bordes:
     # radius(px) -> (24.5mm / 23mm) * 50px = 46.93
-    hough_euro = ski.transform.hough_circle(imagen, radius=47)
+    radios = np.arange(17, 25, 2)
+    hough_euro = ski.transform.hough_circle(imagen, radius=radios)
+    accums, cx, cy, radii = ski.transform.hough_circle_peaks(hough_euro, radios, min_xdistance=10, min_ydistance=10,
+                                                         threshold=hough_euro.max() / 2)  # El threshold no debería ser necesario. Se supone que es el valor por defecto
+    cy_list.append(cy)
+    cx_list.append(cx)
+    radii_list.append(radii)
     imgs_hough_euro.append(hough_euro)
 
+# Dibujar los círculos en la imagen resultado
+imgs_resultado = []
+for i in range (3):
+    resultado = np.zeros(monedas1.shape)
+    for fila, col, radio in zip(cy_list[0], cx_list[0], radii_list[0]):
+        circy, circx = ski.draw.circle_perimeter(fila, col, radio, shape=imgs_hough_euro[0].shape)  # Dibuja un círculo
+        resultado[circy, circx] = 1
+    imgs_resultado.append(resultado)
 
-imagenes_conjunto = [imgs_monedas, imgs_hough_euro]
 
-fig, ax = plt.subplots(nrows=4, ncols=5, layout="constrained")
-fig.suptitle("Ejercicio 1", fontsize=24)
-for i in range(len(imagenes_conjunto)):
-    for j in range(len(imagenes_conjunto[0])):
-        if i == 4 or i == 2:
-            image = imagenes_conjunto[i-1][j]
-            segmentos = ski.transform.probabilistic_hough_line(imagenes_conjunto[i-1][j], threshold=10, line_length=5, line_gap=3)
-            ax[j, i].imshow(np.zeros(image.shape), cmap='gray')
-            for segmento in segmentos:
-                p0, p1 = segmento
-                ax[j, i].plot((p0[0], p1[0]), (p0[1], p1[1]), color='r')  # Dibujar segmento
-        else:
-            ax[j, i].imshow(imagenes_conjunto[i][j], cmap='gray')
-for a in ax.ravel():
+# Visualizar resultados
+fig, axs = plt.subplots(nrows=3, ncols=3, layout="constrained")
+fig.suptitle("Ejemplo - Transformada de Hough para círculos", fontsize=24)
+
+for i in range (3):
+    axs[i,0].imshow(imgs_monedas[i], cmap='gray')
+    axs[i,0].set_title("Imagen original", size=16)
+    axs[i,1].imshow(imgs_bordes[i], cmap='gray')
+    axs[i,1].set_title("Mapa de bordes (Canny)", size=16)
+    axs[i,2].imshow(imgs_resultado[i], cmap='gray')
+    axs[i,2].set_title("HT para círculos", size=16)
+
+for a in axs.ravel():
     a.set_axis_off()
 plt.show()
