@@ -19,7 +19,8 @@ cy_list = []
 cx_list = []
 radii_list = []
 for imagen in imgs_bordes:
-    # radius(px) -> (24.5mm / 23mm) * 50px = 46.93
+    # Radio 1€  -> 23/2= 11.5mm   ---> 11.5/0.508 = 22.637px
+    # Radio 10c -> 19.5/2= 9.75mm ---> 9.75/0.508 = 19.19px
     radios = np.arange(17, 25, 2)
     hough_euro = ski.transform.hough_circle(imagen, radius=radios)
     accums, cx, cy, radii = ski.transform.hough_circle_peaks(hough_euro, radios, min_xdistance=10, min_ydistance=10,
